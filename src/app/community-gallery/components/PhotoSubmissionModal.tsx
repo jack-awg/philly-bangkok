@@ -9,7 +9,7 @@ interface PhotoSubmissionModalProps {
   onSubmit: (data: SubmissionData) => void;
 }
 
-interface SubmissionData {
+export interface SubmissionData {
   name: string;
   email: string;
   instagram: string;
@@ -17,8 +17,51 @@ interface SubmissionData {
   hashtags: string;
 }
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const INSTAGRAM_REGEX = /^[a-zA-Z0-9._]*$/;
+const MAX_NAME_LENGTH = 100;
+const MAX_CAPTION_LENGTH = 500;
+const MAX_HASHTAGS_LENGTH = 200;
+
+function sanitizeText(input: string): string {
+  return input
+    .replace(/[<>]/g, '') // Remove angle brackets to prevent HTML injection
+    .trim();
+}
+
+function validateSubmissionData(data: SubmissionData): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+
+  if (!data.name || data.name.trim().length === 0) {
+    errors.push('Name is required');
+  } else if (data.name.length > MAX_NAME_LENGTH) {
+    errors.push(`Name must be less than ${MAX_NAME_LENGTH} characters`);
+  }
+
+  if (!data.email || !EMAIL_REGEX.test(data.email)) {
+    errors.push('Valid email is required');
+  }
+
+  if (data.instagram && !INSTAGRAM_REGEX.test(data.instagram)) {
+    errors.push('Instagram handle can only contain letters, numbers, periods, and underscores');
+  }
+
+  if (!data.caption || data.caption.trim().length === 0) {
+    errors.push('Caption is required');
+  } else if (data.caption.length > MAX_CAPTION_LENGTH) {
+    errors.push(`Caption must be less than ${MAX_CAPTION_LENGTH} characters`);
+  }
+
+  if (data.hashtags.length > MAX_HASHTAGS_LENGTH) {
+    errors.push(`Hashtags must be less than ${MAX_HASHTAGS_LENGTH} characters`);
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+
 export default function PhotoSubmissionModal({ isOpen, onClose, onSubmit }: PhotoSubmissionModalProps) {
   const [isHydrated, setIsHydrated] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [formData, setFormData] = useState<SubmissionData>({
     name: '',
     email: '',
@@ -53,7 +96,24 @@ export default function PhotoSubmissionModal({ isOpen, onClose, onSubmit }: Phot
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    const sanitizedData: SubmissionData = {
+      name: sanitizeText(formData.name),
+      email: formData.email.trim().toLowerCase(),
+      instagram: sanitizeText(formData.instagram).replace(/^@/, ''),
+      caption: sanitizeText(formData.caption),
+      hashtags: sanitizeText(formData.hashtags),
+    };
+
+    const { valid, errors } = validateSubmissionData(sanitizedData);
+
+    if (!valid) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    setValidationErrors([]);
+    onSubmit(sanitizedData);
     setFormData({
       name: '',
       email: '',
@@ -86,6 +146,15 @@ export default function PhotoSubmissionModal({ isOpen, onClose, onSubmit }: Phot
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {validationErrors.length > 0 && (
+            <div className="bg-destructive/10 border border-destructive/20 rounded-md p-4">
+              <ul className="list-disc list-inside text-sm text-destructive space-y-1">
+                {validationErrors.map((error, index) => (
+                  <li key={index}>{error}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">

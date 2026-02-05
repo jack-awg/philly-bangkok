@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/AppIcon';
-import PhotoSubmissionModal from './PhotoSubmissionModal';
+import PhotoSubmissionModal, { SubmissionData } from './PhotoSubmissionModal';
 import PhotoGalleryGrid from './PhotoGalleryGrid';
 import PhotoDetailModal from './PhotoDetailModal';
 import PartnershipShowcase from './PartnershipShowcase';
@@ -93,7 +93,9 @@ export default function CommunityGalleryInteractive({
     );
   }
 
-  const handlePhotoSubmit = (data: any) => {
+  const handlePhotoSubmit = (_data: SubmissionData) => {
+    // Data is validated and sanitized by PhotoSubmissionModal
+    // TODO: Send to backend API when implemented
     setShowSuccessMessage(true);
     setTimeout(() => setShowSuccessMessage(false), 5000);
   };
