@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 
-interface AppImageProps {
+interface AppImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt' | 'width' | 'height' | 'placeholder' | 'onClick'> {
     src: string;
     alt: string;
     width?: number;
@@ -17,7 +17,6 @@ interface AppImageProps {
     sizes?: string;
     onClick?: () => void;
     fallbackSrc?: string;
-    [key: string]: any;
 }
 
 function AppImage({
