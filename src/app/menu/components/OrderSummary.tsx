@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Icon from '@/components/ui/AppIcon';
+import { siteConfig } from '@/config/site';
 
 interface OrderItem {
   itemId: string;
@@ -90,13 +91,16 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
           </span>
         </div>
 
-        <button className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-headline font-semibold transition-smooth hover:bg-primary/90 hover:shadow-warm active:scale-95 mt-4">
+        <a
+          href={`tel:${siteConfig.contact.phone}`}
+          className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-headline font-semibold transition-smooth hover:bg-primary/90 hover:shadow-warm active:scale-95 mt-4"
+        >
           <Icon name="PhoneIcon" size={20} variant="solid" />
           <span>Call to Order</span>
-        </button>
+        </a>
 
         <p className="text-xs text-center text-muted-foreground mt-3">
-          Call us at +66-2-XXX-XXXX to place your order
+          Call us at {siteConfig.contact.phoneDisplay} to place your order
         </p>
       </div>
     </div>

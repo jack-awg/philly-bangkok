@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Icon from '@/components/ui/AppIcon';
+import { siteConfig } from '@/config/site';
 
 interface NavigationItem {
   label: string;
@@ -28,7 +29,7 @@ const Header = ({ className = '' }: HeaderProps) => {
     { label: 'Gallery', href: '/community-gallery', icon: 'PhotoIcon' },
   ];
 
-  const phoneNumber = '+66-2-XXX-XXXX';
+  const phoneNumber = siteConfig.contact.phone;
 
   useEffect(() => {
     const handleScroll = () => {
