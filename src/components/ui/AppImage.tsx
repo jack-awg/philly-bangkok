@@ -39,9 +39,19 @@ function AppImage({
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
 
-    // More reliable external URL detection
+    // Domains configured in next.config.mjs for optimization
+    const optimizedDomains = [
+        'images.unsplash.com',
+        'images.pexels.com',
+        'images.pixabay.com',
+        'img.rocket.new',
+    ];
+
     const isExternal = imageSrc.startsWith('http://') || imageSrc.startsWith('https://');
-    const isLocal = imageSrc.startsWith('/') || imageSrc.startsWith('./') || imageSrc.startsWith('data:');
+    const isDataUrl = imageSrc.startsWith('data:');
+
+    // Check if external URL is from an optimized domain
+    const isOptimizedExternal = isExternal && optimizedDomains.some(domain => imageSrc.includes(domain));
 
     const handleError = () => {
         if (!hasError && imageSrc !== fallbackSrc) {
@@ -58,8 +68,8 @@ function AppImage({
 
     const commonClassName = `${className} ${isLoading ? 'bg-gray-200' : ''} ${onClick ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}`;
 
-    // For external URLs or when in doubt, use regular img tag
-    if (isExternal && !isLocal) {
+    // For non-optimized external URLs or data URLs, use regular img tag
+    if ((isExternal && !isOptimizedExternal) || isDataUrl) {
         const imgStyle: React.CSSProperties = {};
 
         if (width) imgStyle.width = width;
@@ -96,7 +106,7 @@ function AppImage({
         );
     }
 
-    // For local images and data URLs, use Next.js Image component
+    // For local images and optimized external domains, use Next.js Image component
     const imageProps = {
         src: imageSrc,
         alt,
@@ -105,7 +115,6 @@ function AppImage({
         quality,
         placeholder,
         blurDataURL,
-        unoptimized: true,
         onError: handleError,
         onLoad: handleLoad,
         onClick,
