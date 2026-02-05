@@ -70,7 +70,7 @@ const MenuInteractive: React.FC = () => {
     },
     {
       id: 'mushroom-swiss',
-      name: 'Mushroom & Swiss Cheesesteak',
+      name: 'JUICY Mushroom & Swiss Cheesesteak',
       description: 'Ribeye with sautéed mushrooms, Swiss cheese, garlic aioli',
       story: 'A Philadelphia variation that gained popularity in the 1970s. We use locally-sourced Thai oyster mushrooms alongside imported Swiss cheese, creating a bridge between American tradition and Bangkok\'s incredible produce. The garlic aioli adds a modern touch while respecting the sandwich\'s working-class roots.',
       price: 295,
