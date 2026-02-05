@@ -308,6 +308,25 @@ const MenuInteractive: React.FC = () => {
         fat: '0g',
       },
     },
+    {
+  id: 'spicy-philly',
+  name: 'Spicy Philly Cheesesteak',
+  description: 'Ribeye, grilled peppers & onions, provolone, house chili oil on Amoroso roll',
+  story: 'A Bangkok-leaning twist on Philly tradition: paper-thin ribeye, sweet onions, and peppers on the griddle, finished with provolone and our house chili oil for a clean, warming kick.',
+  price: 295,
+  image: 'https://images.pexels.com/photos/1633525/pexels-photo-1633525.jpeg',
+  alt: 'Spicy Philly cheesesteak sandwich with peppers and melted provolone on toasted roll',
+  category: 'cheesesteaks',
+  tags: [],
+  ingredients: ['Australian Ribeye', 'Amoroso Roll', 'Provolone', 'Bell Peppers', 'Onions', 'House Chili Oil'],
+  spicyLevel: 2,
+  nutritionalInfo: {
+    calories: 710,
+    protein: '44g',
+    carbs: '50g',
+    fat: '37g',
+      },
+    },
   ];
 
   const handleCategoryChange = (category: string) => {
