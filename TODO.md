@@ -96,3 +96,17 @@ Many components are marked `'use client'` that could be server components:
 - Layout components without interactivity
 
 **Fix:** Audit components and remove `'use client'` where possible to reduce client bundle size.
+
+---
+
+## Restaurant Input
+
+### Replace placeholder image with restaurant photography
+All photography uses stock photography, the restaurant needs to provide:
+
+Real photos that:
+	•	are taken in-house
+	•	have consistent lighting
+	•	same angles per dish
+	•	phone is fine if done well (Use best camera possible, iPhone 17 is great)
+
